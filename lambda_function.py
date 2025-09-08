@@ -81,7 +81,7 @@ def upload_to_s3_bucket(buffer, file_name):
 
     try:
         s3_client.upload_fileobj(
-            buffer, Bucket=AWS_S3_BUCKET_NAME, Key=f"raw/{file_name}"
+            buffer, Bucket=AWS_S3_BUCKET_NAME, Key=f"raw/{file_name}.parquet"
         )
 
         return True
