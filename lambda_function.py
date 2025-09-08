@@ -1,9 +1,9 @@
 import os
-import requests
-import json
 import boto3
+import requests
 import pandas as pd
-from datetime import datetime
+from io import BytesIO
+from datetime import date
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -17,6 +17,14 @@ AWS_S3_BUCKET_NAME = os.getenv("AWS_S3_BUCKET_NAME")
 AWS_REGION = os.getenv("AWS_REGION")
 
 URL = f"https://api.tomorrow.io/v4/weather/forecast?location=93312%20US&timesteps=1h&units=imperial&apikey={API_KEY}"
+
+# Create S3 Client
+s3_client = boto3.client(
+    service_name="s3",
+    region_name=AWS_REGION,
+    aws_access_key_id=AWS_ACCESS_KEY,
+    aws_secret_access_key=AWS_SECRET_KEY,
+)
 
 
 def fetch_weather_data(api_url, headers):
@@ -58,13 +66,36 @@ def flatten_convert_json(json_data):
     for k, v in location_data.items():
         df[k] = v
 
-    return df.to_parquet()
+    # Create buffer to save parquet to memory
+    buffer = BytesIO()
+    df.to_parquet(buffer, engine="pyarrow", index=False, compression="snappy")
+
+    # Change stream position to start
+    buffer.seek(0)
+
+    return buffer
+
+
+def upload_to_s3_bucket(buffer, file_name):
+    """Uploads JSON data to S3 bucket."""
+
+    try:
+        s3_client.upload_fileobj(
+            buffer, Bucket=AWS_S3_BUCKET_NAME, Key=f"raw/{file_name}"
+        )
+
+        return True
+    except Exception as e:
+        print(f"Error uploading to S3: {e}")
+        return False
 
 
 # Run if script is executed
 if __name__ == "__main__":
     headers = {"accept": "application/json", "accept-encoding": "deflate, gzip, br"}
     json_data = fetch_weather_data(URL, headers)
-
-    df = flatten_convert_json(json_data)
-    print(df)
+    buffer = flatten_convert_json(json_data)
+    file_name = formatted_date = date.today().strftime("%m-%d-%Y")
+    print(formatted_date)
+    response = upload_to_s3_bucket(buffer, file_name)
+    print(response)
