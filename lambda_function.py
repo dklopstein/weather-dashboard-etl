@@ -1,4 +1,5 @@
 import os
+import re
 import boto3
 import requests
 import pandas as pd
@@ -57,14 +58,25 @@ def flatten_convert_json(json_data):
     # Rename coloumns
     column_names = {}
     for col in df.columns:
+        new_name = col
         if col[:7] == "values.":
-            column_names[col] = col[7:]
+            new_name = col[7:]
+
+        # Regex to convert camel case to snake case
+        new_name = re.sub(r"(?<!^)(?=[A-Z])", "_", new_name).lower()
+        column_names[col] = new_name
 
     df = df.rename(columns=column_names)
 
-    # Add location data to each row
-    for k, v in location_data.items():
-        df[k] = v
+    # Split location data and add it to each row
+    city, county, state, postal_code, country = location_data["name"].split(", ")
+    df["city"] = city
+    df["county"] = county
+    df["state"] = state
+    df["postal_code"] = postal_code
+    df["country"] = country
+    df["lat"] = location_data["lat"]
+    df["lon"] = location_data["lon"]
 
     # Create buffer to save parquet to memory
     buffer = BytesIO()
@@ -95,7 +107,7 @@ if __name__ == "__main__":
     headers = {"accept": "application/json", "accept-encoding": "deflate, gzip, br"}
     json_data = fetch_weather_data(URL, headers)
     buffer = flatten_convert_json(json_data)
-    file_name = formatted_date = date.today().strftime("%m-%d-%Y")
-    print(formatted_date)
-    response = upload_to_s3_bucket(buffer, file_name)
-    print(response)
+    # file_name = formatted_date = date.today().strftime("%m-%d-%Y")
+    # print(formatted_date)
+    # response = upload_to_s3_bucket(buffer, file_name)
+    # print(response)
