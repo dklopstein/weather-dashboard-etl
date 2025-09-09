@@ -4,8 +4,8 @@ import boto3
 import requests
 import pandas as pd
 from io import BytesIO
-from datetime import date
 from dotenv import load_dotenv
+from datetime import date, datetime, timedelta
 
 # Load environment variables from .env file
 load_dotenv()
@@ -50,13 +50,23 @@ def flatten_convert_json(json_data):
     # Flatten the nested structure
     df = pd.json_normalize(hourly_data)
 
-    # Convert time to PST for better readability
-    df["time"] = pd.to_datetime(df["time"], utc=True).dt.tz_convert(
-        "America/Los_Angeles"
-    )
+    # Create PST time column to filter data to single day
+    df["time"] = pd.to_datetime(df["time"], utc=True)
+    df["time_pst"] = df["time"].dt.tz_convert("America/Los_Angeles")
+
+    # Filter data to only get current day
+    target_day = datetime.now().date()
+    next_day = target_day + timedelta(days=1)
+    df = df[
+        (df["time_pst"].dt.date == target_day)
+        | ((df["time_pst"].dt.date == next_day) & (df["time_pst"].dt.hour == 0))
+    ]
+
+    # Drop PST column to help with conversion in Athena
+    df = df.drop(columns=["time_pst"])
 
     # Rename coloumns
-    column_names = {}
+    column_names = {"time": "time_unix"}
     for col in df.columns:
         new_name = col
         if col[:7] == "values.":
