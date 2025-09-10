@@ -1,4 +1,5 @@
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from io import BytesIO
 import pandas as pd
 import requests
@@ -112,7 +113,7 @@ def lambda_handler(event, context):
 
     json_data = fetch_weather_data(API_URL)
     buffer = flatten_convert_json(json_data)
-    file_name = date.today().strftime("%m-%d-%Y")
+    file_name = datetime.now(ZoneInfo("America/Los_Angeles")).strftime("%m-%d-%Y")
     response = upload_to_s3_bucket(buffer, file_name)
 
     return {"statusCode": response, "body": json.dumps(file_name)}
