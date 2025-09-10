@@ -1,23 +1,18 @@
-import os
-import re
-import boto3
-import requests
-import pandas as pd
-from io import BytesIO
-from dotenv import load_dotenv
 from datetime import date, datetime, timedelta
+from io import BytesIO
+import pandas as pd
+import requests
+import boto3
+import json
+import re
 
-# Load environment variables from .env file
-load_dotenv()
-
-# Get variables from environment
-API_KEY = os.getenv("API_KEY")
-AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
-AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
-AWS_S3_BUCKET_NAME = os.getenv("AWS_S3_BUCKET_NAME")
-AWS_REGION = os.getenv("AWS_REGION")
-
-URL = f"https://api.tomorrow.io/v4/weather/forecast?location=93312%20US&timesteps=1h&units=imperial&apikey={API_KEY}"
+# Keys and Info
+API_KEY = "API_KEY"
+AWS_ACCESS_KEY = "AWS_ACCESS_KEY"
+AWS_SECRET_KEY = "AWS_SECRET_KEY"
+AWS_S3_BUCKET_NAME = "AWS_S3_BUCKET_NAME"
+AWS_REGION = "AWS_REGION"
+API_URL = "API_URL"
 
 # Create S3 Client
 s3_client = boto3.client(
@@ -28,10 +23,11 @@ s3_client = boto3.client(
 )
 
 
-def fetch_weather_data(api_url, headers):
+def fetch_weather_data(api_url):
     """Fetch weather data from API."""
 
     try:
+        headers = {"accept": "application/json", "accept-encoding": "deflate, gzip, br"}
         response = requests.get(api_url, headers=headers)
         response.raise_for_status()  # Raises HTTPError for bad status codes
         return response.json()
@@ -112,12 +108,12 @@ def upload_to_s3_bucket(buffer, file_name):
         return False
 
 
-# Run if script is executed
-if __name__ == "__main__":
-    headers = {"accept": "application/json", "accept-encoding": "deflate, gzip, br"}
-    json_data = fetch_weather_data(URL, headers)
+def lambda_handler(event, context):
+    """Fetch data from API and upload to S3 bucket."""
+
+    json_data = fetch_weather_data(API_URL)
     buffer = flatten_convert_json(json_data)
-    # file_name = formatted_date = date.today().strftime("%m-%d-%Y")
-    # print(formatted_date)
-    # response = upload_to_s3_bucket(buffer, file_name)
-    # print(response)
+    file_name = date.today().strftime("%m-%d-%Y")
+    response = upload_to_s3_bucket(buffer, file_name)
+
+    return {"statusCode": response, "body": json.dumps(file_name)}
