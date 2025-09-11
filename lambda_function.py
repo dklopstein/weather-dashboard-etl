@@ -58,11 +58,11 @@ def flatten_convert_json(json_data):
         | ((df["time_pst"].dt.date == next_day) & (df["time_pst"].dt.hour == 0))
     ]
 
-    # Drop PST column to help with conversion in Athena
+    # Drop PST column since filtering is done
     df = df.drop(columns=["time_pst"])
 
     # Rename coloumns
-    column_names = {"time": "time_unix"}
+    column_names = {}
     for col in df.columns:
         new_name = col
         if col[:7] == "values.":
@@ -83,6 +83,24 @@ def flatten_convert_json(json_data):
     df["country"] = country
     df["lat"] = location_data["lat"]
     df["lon"] = location_data["lon"]
+
+    # Cast columns to float to prevent table errors
+    non_float_cols = set([
+        'time',
+        'cloud_cover',
+        'humidity',
+        'uv_health_concern',
+        'uv_index',
+        'weather_code',
+        'city',
+        'county',
+        'state',
+        'postal_code',
+        'country',
+    ])
+
+    float_cols = list(set(df.columns) - non_float_cols)
+    df[float_cols] = df[float_cols].astype(float)
 
     # Create buffer to save parquet to memory
     buffer = BytesIO()
