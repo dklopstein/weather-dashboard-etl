@@ -52,11 +52,7 @@ def flatten_convert_json(json_data):
 
     # Filter data to only get current day
     target_day = datetime.now().date()
-    next_day = target_day + timedelta(days=1)
-    df = df[
-        (df["time_pst"].dt.date == target_day)
-        | ((df["time_pst"].dt.date == next_day) & (df["time_pst"].dt.hour == 0))
-    ]
+    df = df[(df["time_pst"].dt.date == target_day)]
 
     # Drop PST column since filtering is done
     df = df.drop(columns=["time_pst"])
