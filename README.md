@@ -1,6 +1,6 @@
 # Weather Dashboard
 
-![](images/hike%20pano.jpeg)
+![](images/sun.jpeg)
 
 A personal weather monitoring system that collects detailed weather data for desert valley conditions and displays it through an interactive dashboard.
 
