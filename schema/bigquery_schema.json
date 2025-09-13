@@ -1,0 +1,236 @@
+[
+  {
+    "name": "time",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Unix timestamp of the weather observation"
+  },
+  {
+    "name": "altimeter_setting",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Altimeter setting in inHg"
+  },
+  {
+    "name": "cloud_base",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "The lowest altitude of the visible portion of a cloud (above ground level) in mi"
+  },
+  {
+    "name": "cloud_ceiling",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "The highest altitude of the visible portion of a cloud (above ground level) in mi"
+  },
+  {
+    "name": "cloud_cover",
+    "type": "INTEGER",
+    "mode": "NULLABLE",
+    "description": "Cloud cover percentage (0-100)"
+  },
+  {
+    "name": "dew_point",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Dew point temperature in Fahrenheit [32,212]"
+  },
+  {
+    "name": "evapotranspiration",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Evapotranspiration rate in in/hr"
+  },
+  {
+    "name": "freezing_rain_intensity",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Freezing rain intensity in in/hr"
+  },
+  {
+    "name": "humidity",
+    "type": "INTEGER",
+    "mode": "NULLABLE",
+    "description": "Relative humidity percentage (0-100)"
+  },
+  {
+    "name": "ice_accumulation",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Ice accumulation in in"
+  },
+  {
+    "name": "ice_accumulation_lwe",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Ice accumulation liquid water equivalent in in"
+  },
+  {
+    "name": "precipitation_probability",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Probability of precipitation (0-1)"
+  },
+  {
+    "name": "pressure_sea_level",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Sea level pressure in inHg"
+  },
+  {
+    "name": "pressure_surface_level",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Surface level pressure in inHg"
+  },
+  {
+    "name": "rain_accumulation",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Rain accumulation in in"
+  },
+  {
+    "name": "rain_intensity",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Rain intensity in in/hr"
+  },
+  {
+    "name": "sleet_accumulation",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Sleet accumulation in in"
+  },
+  {
+    "name": "sleet_accumulation_lwe",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Sleet accumulation liquid water equivalent in in"
+  },
+  {
+    "name": "sleet_intensity",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Sleet intensity in in/hr"
+  },
+  {
+    "name": "snow_accumulation",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Snow accumulation in in"
+  },
+  {
+    "name": "snow_accumulation_lwe",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Snow accumulation liquid water equivalent in in"
+  },
+  {
+    "name": "snow_depth",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Snow depth in in"
+  },
+  {
+    "name": "snow_intensity",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Snow intensity in in/hr"
+  },
+  {
+    "name": "temperature",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Temperature in Fahrenheit [-130,140]"
+  },
+  {
+    "name": "temperature_apparent",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Apparent temperature (feels like) in Fahrenheit [-130,140]"
+  },
+  {
+    "name": "uv_health_concern",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "UV health concern index"
+  },
+  {
+    "name": "uv_index",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "UV index (0-11+)"
+  },
+  {
+    "name": "visibility",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Visibility in mi"
+  },
+  {
+    "name": "weather_code",
+    "type": "INTEGER",
+    "mode": "NULLABLE",
+    "description": "Tomorrow.io weather condition code"
+  },
+  {
+    "name": "wind_direction",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Wind direction in degrees"
+  },
+  {
+    "name": "wind_gust",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Wind gust speed in mph"
+  },
+  {
+    "name": "wind_speed",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Wind speed in mph"
+  },
+  {
+    "name": "city",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "City name"
+  },
+  {
+    "name": "county",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "County name"
+  },
+  {
+    "name": "state",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "State or province name"
+  },
+  {
+    "name": "postal_code",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Postal or ZIP code"
+  },
+  {
+    "name": "country",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Country name"
+  },
+  {
+    "name": "lat",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Latitude coordinate"
+  },
+  {
+    "name": "lon",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Longitude coordinate"
+  }
+]
