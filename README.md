@@ -1,5 +1,7 @@
 # Weather Dashboard
 
+![](images/hike%20pano.jpeg)
+
 A personal weather monitoring system that collects detailed weather data for desert valley conditions and displays it through an interactive dashboard.
 
 ## Project Overview
@@ -8,10 +10,7 @@ This project creates an automated pipeline to collect, process, and visualize we
 
 ## Architecture
 
-```
-CloudWatch Events (Daily Trigger) → AWS Lambda → Tomorrow.io API → S3 (Parquet) → BigQuery → Looker Studio Dashboard
-                
-```
+![](images/pipeline.png)
 
 ## The Story Behind This Project
 
@@ -65,7 +64,7 @@ Standard weather apps often miss these nuances. This project was built to captur
 
 3. Run queries to get necessary columns and transformations/aggregates.
 
-### Looker Studio Dashboard
+### Looker Studio Dashboard (*WIP while data accumulates*)
 
 1. Connect Looker Studio to your BigQuery dataset
 
@@ -74,6 +73,8 @@ Standard weather apps often miss these nuances. This project was built to captur
    - Humidity and precipitation patterns
    - Wind speed and direction analysis
    - Daily/weekly weather summaries
+
+![](images/dashboard.png)
 
 ## Design Decisions
 
