@@ -74,7 +74,7 @@ Standard weather apps often miss these nuances. This project was built to captur
    - Wind speed and direction analysis
    - Daily/weekly weather summaries
 
-![](images/dashboard.png)
+![](images/dashboard.jpg)
 
 ## Design Decisions
 
